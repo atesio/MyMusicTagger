@@ -1,0 +1,15 @@
+C:\Users\alain\Documents\Visual Studio 2010\Projects\MyMP3Tagger\bin\Debug\MyMP3Tagger.exe
+C:\Users\alain\Documents\Visual Studio 2010\Projects\MyMP3Tagger\bin\Debug\MyMP3Tagger.pdb
+C:\Users\alain\Documents\Visual Studio 2010\Projects\MyMP3Tagger\bin\Debug\UltraID3Lib.dll
+C:\Users\alain\Documents\Visual Studio 2010\Projects\MyMP3Tagger\bin\Debug\UltraID3Lib.xml
+C:\Users\alain\Documents\Visual Studio 2010\Projects\MyMP3Tagger\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\alain\Documents\Visual Studio 2010\Projects\MyMP3Tagger\obj\x86\Debug\MainWindow.baml
+C:\Users\alain\Documents\Visual Studio 2010\Projects\MyMP3Tagger\obj\x86\Debug\MainWindow.g.cs
+C:\Users\alain\Documents\Visual Studio 2010\Projects\MyMP3Tagger\obj\x86\Debug\App.g.cs
+C:\Users\alain\Documents\Visual Studio 2010\Projects\MyMP3Tagger\obj\x86\Debug\MyMP3Tagger_MarkupCompile.cache
+C:\Users\alain\Documents\Visual Studio 2010\Projects\MyMP3Tagger\obj\x86\Debug\MyMP3Tagger.g.resources
+C:\Users\alain\Documents\Visual Studio 2010\Projects\MyMP3Tagger\obj\x86\Debug\MyMP3Tagger.Properties.Resources.resources
+C:\Users\alain\Documents\Visual Studio 2010\Projects\MyMP3Tagger\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\Users\alain\Documents\Visual Studio 2010\Projects\MyMP3Tagger\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\Users\alain\Documents\Visual Studio 2010\Projects\MyMP3Tagger\obj\x86\Debug\MyMP3Tagger.exe
+C:\Users\alain\Documents\Visual Studio 2010\Projects\MyMP3Tagger\obj\x86\Debug\MyMP3Tagger.pdb
