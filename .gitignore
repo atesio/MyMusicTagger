@@ -1,0 +1,6 @@
+# git ignore file
+*.cache
+obj
+bin
+*.psess
+*.suo
