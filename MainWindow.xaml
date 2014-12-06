@@ -1,10 +1,10 @@
 ﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
         xmlns:local="clr-namespace:MyMusicTagger" x:Class="MyMusicTagger.MainWindow"
-        Title="My MP3 Tagger" Height="349" Width="598">
+        Title="My Music Tagger" Height="349" Width="598" Icon="musicicon.ico">
     <Grid>
-        <TextBox Height="24" Margin="12,12,42,0" x:Name="FolderPath" VerticalAlignment="Top" Text="Q:\music\" />
+        <TextBox Height="24" Margin="12,12,42,0" x:Name="FolderPath" VerticalAlignment="Top" />
         <DataGrid AutoGenerateColumns="True" Margin="12,74,12,12" x:Name="GridDiffs" IsReadOnly="True" />
         <ProgressBar Height="24" Margin="216,42,12,0" x:Name="ProgressBar" VerticalAlignment="Top" Value="0" />
         <TextBlock Height="22" Margin="217,44,12,0" x:Name="ProgressText" Text="" VerticalAlignment="Top" Opacity="1" HorizontalAlignment="Right" />

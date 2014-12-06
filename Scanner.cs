@@ -7,6 +7,19 @@ namespace MyMusicTagger
 {
     public static class Scanner
     {
+        public static bool IsSupported(string fileName)
+        {
+            var ext = System.IO.Path.GetExtension(fileName).ToUpper();
+            switch (ext)
+            {
+                case ".MP3":
+                case ".FLAC":
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
         public static List<string> GetFiles(string folderPath)
         {
             var paths = new List<string>();
@@ -23,7 +36,7 @@ namespace MyMusicTagger
             }
             foreach (var fileName in System.IO.Directory.GetFiles(folderPath))
             {
-                if (!fileName.ToUpper().EndsWith(".MP3"))
+                if (!IsSupported(fileName))
                     continue;
                 var filePath = System.IO.Path.Combine(folderPath, fileName);
                 files.Add(filePath);
@@ -47,36 +60,17 @@ namespace MyMusicTagger
         {
             var current = new Dictionary<Tags, string>();
             var expected = new Dictionary<Tags, string>();
-            var id3 = new HundredMilesSoftware.UltraID3Lib.UltraID3();
-            id3.Read(filePath);
+            var file = TagLib.File.Create(filePath);
             var folderPath = System.IO.Path.GetDirectoryName(filePath);
             var parts = folderPath.Split('\\');
             expected.Add(Tags.Album, parts[parts.Length - 1]);
-            expected.Add(Tags.Artist, parts[parts.Length - 2]);
-            expected.Add(Tags.Band, parts[parts.Length - 2]);
+            expected.Add(Tags.Performers, parts[parts.Length - 2]);
+            expected.Add(Tags.AlbumArtists, parts[parts.Length - 2]);
             expected.Add(Tags.Genre, parts[parts.Length - 3]);
-            current.Add(Tags.Album, id3.ID3v2Tag.Album);
-            current.Add(Tags.Artist, id3.ID3v2Tag.Artist);
-            current.Add(Tags.Genre, id3.ID3v2Tag.Genre);
-            string band;
-            var bandFrame = id3.ID3v2Tag.Frames.GetFrame(HundredMilesSoftware.UltraID3Lib.CommonSingleInstanceID3v2FrameTypes.Band);
-            band = "<None>";
-            if (bandFrame != null && bandFrame.IsSet)
-            {
-                if (bandFrame is HundredMilesSoftware.UltraID3Lib.ID3v23BandFrame)
-                {
-                    var tBandFrame = (HundredMilesSoftware.UltraID3Lib.ID3v23BandFrame)bandFrame;
-                    band = tBandFrame.Band;
-                }
-                else if (bandFrame is HundredMilesSoftware.UltraID3Lib.ID3v22BandFrame)
-                {
-                    var tBandFrame = (HundredMilesSoftware.UltraID3Lib.ID3v22BandFrame)bandFrame;
-                    band = tBandFrame.Band;
-                }
-                else
-                    System.Diagnostics.Debugger.Break();
-            }
-            current.Add(Tags.Band, band);
+            current.Add(Tags.Album, file.Tag.Album);
+            current.Add(Tags.Performers, String.Join(";", file.Tag.Performers));
+            current.Add(Tags.AlbumArtists, String.Join(";", file.Tag.AlbumArtists));
+            current.Add(Tags.Genre, String.Join(";", file.Tag.Genres));
             foreach (var tag in expected.Keys)
             {
                 if (expected[tag] != current[tag])
@@ -105,61 +99,30 @@ namespace MyMusicTagger
 
         private static void WriteDiff(string filePath, TagDiffs diffs)
         {
-            var id3 = new HundredMilesSoftware.UltraID3Lib.UltraID3();
-            id3.Read(filePath);
+            var file = TagLib.File.Create(filePath);
             foreach (var diff in diffs)
             {
                 switch (diff.Tag)
                 {
                     case Tags.Genre:
-                        id3.ID3v2Tag.Genre = diff.NewValue;
+                        file.Tag.Genres = new string[] { diff.NewValue };
                         break;
-                    case Tags.Artist:
-                        id3.ID3v1Tag.Artist = diff.NewValue;
-                        id3.ID3v2Tag.Artist = diff.NewValue;
+                    case Tags.Performers:
+                        file.Tag.Performers = new string[] { diff.NewValue };
                         break;
                     case Tags.Album:
-                        if (diff.NewValue != null && diff.NewValue.Length > 30) diff.NewValue = diff.NewValue.Substring(0, 30);
-                        id3.ID3v1Tag.Album = diff.NewValue;
-                        id3.ID3v2Tag.Album = diff.NewValue;
+                     //   if (diff.NewValue != null && diff.NewValue.Length > 30) diff.NewValue = diff.NewValue.Substring(0, 30);
+                        file.Tag.Album = diff.NewValue;
                         break;
                     case Tags.Title:
-                        id3.ID3v1Tag.Title = diff.NewValue;
-                        id3.ID3v2Tag.Title = diff.NewValue;
+                        file.Tag.Title = diff.NewValue;
                         break;
-                    case Tags.Band:
-                        var bandFrame = id3.ID3v2Tag.Frames.GetFrame(HundredMilesSoftware.UltraID3Lib.CommonSingleInstanceID3v2FrameTypes.Band);
-                        if (bandFrame == null || !bandFrame.IsSet)
-                        {
-                            if (id3.ID3v2Tag.Version == HundredMilesSoftware.UltraID3Lib.ID3v2TagVersions.ID3v22)
-                            {
-                                var tBandFrame = new HundredMilesSoftware.UltraID3Lib.ID3v22BandFrame(diff.NewValue);
-                                id3.ID3v2Tag.Frames.Add(tBandFrame);
-                            }
-                            else if (id3.ID3v2Tag.Version == HundredMilesSoftware.UltraID3Lib.ID3v2TagVersions.ID3v23)
-                            {
-                                var tBandFrame = new HundredMilesSoftware.UltraID3Lib.ID3v23BandFrame(diff.NewValue);
-                                id3.ID3v2Tag.Frames.Add(tBandFrame);
-                            }
-                            else
-                                throw new NotImplementedException("id3 band frame tag version not handled: " + id3.ID3v2Tag.Version.ToString());
-                        }
-                        else if (bandFrame is HundredMilesSoftware.UltraID3Lib.ID3v23BandFrame)
-                        {
-                            var tBandFrame = (HundredMilesSoftware.UltraID3Lib.ID3v23BandFrame)bandFrame;
-                            tBandFrame.Band = diff.NewValue;
-                        }
-                        else if (bandFrame is HundredMilesSoftware.UltraID3Lib.ID3v22BandFrame)
-                        {
-                            var tBandFrame = (HundredMilesSoftware.UltraID3Lib.ID3v22BandFrame)bandFrame;
-                            tBandFrame.Band = diff.NewValue;
-                        }
-                        else
-                            throw new NotImplementedException("band frame tag version not handled: " + bandFrame.GetType().ToString());
+                    case Tags.AlbumArtists:
+                        file.Tag.AlbumArtists = new string[] { diff.NewValue };
                         break;
                 }
             }
-            id3.Write();
+            file.Save();
         }
     }
 }

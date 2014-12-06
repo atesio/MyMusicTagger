@@ -8,10 +8,10 @@ namespace MyMusicTagger
     public enum Tags
     {
         Genre,
-        Artist,
+        Performers,
         Album,
         Title,
-        Band
+        AlbumArtists
     }
     public class TagDiff
     {
