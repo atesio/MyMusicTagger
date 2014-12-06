@@ -42,25 +42,35 @@ namespace MyMusicTagger
                 files.Add(filePath);
             }
         }
-        public static TagDiffs GetDiffs(List<string> filePaths, System.ComponentModel.BackgroundWorker worker)
+        public static void GetDiffs(List<string> filePaths, System.ComponentModel.BackgroundWorker worker, out TagDiffs diffs, out FileErrors errors)
         {
-            var diffs = new TagDiffs();
+            diffs = new TagDiffs();
+            errors = new FileErrors();
             int index = 0;
             int total = filePaths.Count();
             foreach (var filePath in filePaths)
             {
-                if (worker.CancellationPending) return null;
+                if (worker.CancellationPending) return;
                 index += 1;
                 worker.ReportProgress(index*100/total, filePath);
-                AddDiffs(diffs, filePath);
+                AddDiffs(diffs, errors, filePath);
             }
-            return diffs;
         }
-        private static void AddDiffs(TagDiffs diffs, string filePath)
+
+        private static void AddDiffs(TagDiffs diffs, FileErrors errors, string filePath)
         {
+            TagLib.File file;
+            try
+            {
+                file = TagLib.File.Create(filePath);
+            }
+            catch (TagLib.CorruptFileException ex)
+            {
+                errors.Add(new FileError { FilePath = filePath, Message = ex.Message });
+                return;
+            }
             var current = new Dictionary<Tags, string>();
             var expected = new Dictionary<Tags, string>();
-            var file = TagLib.File.Create(filePath);
             var folderPath = System.IO.Path.GetDirectoryName(filePath);
             var parts = folderPath.Split('\\');
             expected.Add(Tags.Album, parts[parts.Length - 1]);
@@ -84,8 +94,9 @@ namespace MyMusicTagger
                 }
             }
         }
-        public static void WriteDiffs(OrderedDiffs diffs, System.ComponentModel.BackgroundWorker worker)
+        public static void WriteDiffs(OrderedDiffs diffs, System.ComponentModel.BackgroundWorker worker, out FileErrors errors)
         {
+            errors = new FileErrors();
             int total = diffs.Count();
             int index = 0;
             foreach (var filePath in diffs.Keys)
@@ -93,7 +104,14 @@ namespace MyMusicTagger
                 if (worker.CancellationPending) return;
                 index += 1;
                 worker.ReportProgress(index * 100 / total, filePath);
-                WriteDiff(filePath, diffs[filePath]);
+                try
+                {
+                    WriteDiff(filePath, diffs[filePath]);
+                }
+                catch (Exception ex)
+                {
+                    errors.Add(new FileError { FilePath = filePath, Message = ex.Message });
+                }
             }
         }
 

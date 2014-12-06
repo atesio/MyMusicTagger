@@ -4,12 +4,22 @@
         xmlns:local="clr-namespace:MyMusicTagger" x:Class="MyMusicTagger.MainWindow"
         Title="My Music Tagger" Height="349" Width="598" Icon="musicicon.ico">
     <Grid>
-        <TextBox Height="24" Margin="12,12,42,0" x:Name="FolderPath" VerticalAlignment="Top" />
-        <DataGrid AutoGenerateColumns="True" Margin="12,74,12,12" x:Name="GridDiffs" IsReadOnly="True" />
-        <ProgressBar Height="24" Margin="216,42,12,0" x:Name="ProgressBar" VerticalAlignment="Top" Value="0" />
-        <TextBlock Height="22" Margin="217,44,12,0" x:Name="ProgressText" Text="" VerticalAlignment="Top" Opacity="1" HorizontalAlignment="Right" />
-        <local:MyButton x:Name="Scan2" Content="Scan" HorizontalAlignment="Left" Height="25" Margin="13,42,0,0" VerticalAlignment="Top" Width="98" MyOnClick="Scan_MyOnClick" MyOnProgress="ProgressHandler"/>
-        <local:MyButton x:Name="Write2" Content="Write changes" HorizontalAlignment="Left" Height="24" Margin="116,42,0,0" VerticalAlignment="Top" Width="96" MyOnProgress="ProgressHandler" MyOnClick="Write_MyOnClick"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+        
+        <TextBox Height="24" Margin="12,10,42,0" x:Name="FolderPath" VerticalAlignment="Top" Grid.Row="0" />
         <Button x:Name="ButtonBrowse" Content="..." Height="26" Margin="0,10,10,0" VerticalAlignment="Top" RenderTransformOrigin="1.455,0.423" Click="ButtonBrowse_Click" HorizontalAlignment="Right" Width="27"/>
+
+        <local:MyButton x:Name="Scan2" Content="Scan" HorizontalAlignment="Left" Height="25" Margin="13,5,0,0" VerticalAlignment="Top" Width="98" MyOnClick="Scan_MyOnClick" MyOnProgress="ProgressHandler" Grid.Row="1"/>
+        <local:MyButton x:Name="Write2" Content="Write changes" HorizontalAlignment="Left" Height="24" Margin="116,5,0,0" VerticalAlignment="Top" Width="96" MyOnProgress="ProgressHandler" MyOnClick="Write_MyOnClick" Grid.Row="1"/>
+        <ProgressBar Height="24" Margin="216,5,12,0" x:Name="ProgressBar" VerticalAlignment="Top" Value="0" Grid.Row="1" />
+        <TextBlock Height="24" Margin="216,5,12,0" x:Name="ProgressText" Text="" VerticalAlignment="Top" Opacity="1" HorizontalAlignment="Left" Grid.Row="1" />
+
+        <DataGrid AutoGenerateColumns="True"  x:Name="GridDiffs" IsReadOnly="True" Grid.Row="2"/>
+        <DataGrid AutoGenerateColumns="True"  x:Name="GridErrors" IsReadOnly="True" Grid.Row="3"/>
     </Grid>
 </Window>

@@ -19,6 +19,11 @@ namespace MyMusicTagger
         public Tags Tag { get; set; }
         public string OldValue { get; set; }
         public string NewValue { get; set; }
+
+        public override string ToString()
+        {
+            return String.Format("{0}: {1} -> {2}", Tag.ToString(), OldValue ?? "<NULL>", NewValue ?? "<NULL>");
+        }
     }
     public class TagDiffs : List<TagDiff>
     {

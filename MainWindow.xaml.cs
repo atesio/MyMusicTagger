@@ -32,17 +32,25 @@ namespace MyMusicTagger
 
         private void Scan_MyOnClick(object sender, System.ComponentModel.BackgroundWorker worker)
         {
+            GridDiffs.Dispatcher.BeginInvoke((Action)(() => { GridDiffs.ItemsSource = null; }));
+            GridErrors.Dispatcher.BeginInvoke((Action)(() => { GridErrors.ItemsSource = null; }));
             var folderPath = (string)FolderPath.Dispatcher.Invoke(new Func<string>(() => FolderPath.Text));
             var filePaths = Scanner.GetFiles(folderPath);
-            var diffs = Scanner.GetDiffs(filePaths, worker);
+            TagDiffs diffs;
+            FileErrors errors;
+            Scanner.GetDiffs(filePaths, worker, out diffs, out errors);
+            if (worker.CancellationPending) return;
             GridDiffs.Dispatcher.BeginInvoke((Action)(() => { GridDiffs.ItemsSource = diffs; }));
+            GridErrors.Dispatcher.BeginInvoke((Action)(() => { GridErrors.ItemsSource = errors; }));
         }
 
         private void Write_MyOnClick(object sender, System.ComponentModel.BackgroundWorker worker)
         {
             var diffs = (TagDiffs)FolderPath.Dispatcher.Invoke(new Func<TagDiffs>(() => (TagDiffs)GridDiffs.ItemsSource));
             var orderedDiffs = diffs.GetOrderedDiffs();
-            Scanner.WriteDiffs(orderedDiffs, worker);
+            FileErrors errors;
+            Scanner.WriteDiffs(orderedDiffs, worker, out errors);
+            GridErrors.Dispatcher.BeginInvoke((Action)(() => { GridErrors.ItemsSource = errors; }));
         }
 
         private void ButtonBrowse_Click(object sender, RoutedEventArgs e)

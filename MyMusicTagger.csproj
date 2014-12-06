@@ -65,6 +65,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="FileError.cs" />
     <Compile Include="MyButton.cs" />
     <Compile Include="Scanner.cs" />
     <Compile Include="TagDiff.cs" />
