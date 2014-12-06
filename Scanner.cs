@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MyMP3Tagger
+namespace MyMusicTagger
 {
     public static class Scanner
     {

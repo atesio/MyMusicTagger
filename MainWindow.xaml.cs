@@ -12,7 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace MyMP3Tagger
+namespace MyMusicTagger
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

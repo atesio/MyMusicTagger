@@ -8,8 +8,8 @@
     <ProjectGuid>{7A7237B5-65F9-4366-8AB0-11A87EB46E3E}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MyMP3Tagger</RootNamespace>
-    <AssemblyName>MyMP3Tagger</AssemblyName>
+    <RootNamespace>MyMusicTagger</RootNamespace>
+    <AssemblyName>MyMusicTagger</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>

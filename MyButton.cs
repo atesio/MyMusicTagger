@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MyMP3Tagger
+namespace MyMusicTagger
 {
     public delegate void MyButtonEventHandler(object sender, System.ComponentModel.BackgroundWorker worker);
     public delegate void MyProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e);

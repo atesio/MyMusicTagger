@@ -5,7 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Windows;
 
-namespace MyMP3Tagger
+namespace MyMusicTagger
 {
     /// <summary>
     /// Interaction logic for App.xaml

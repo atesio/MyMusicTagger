@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MyMP3Tagger.Properties
+namespace MyMusicTagger.Properties
 {
 
 
