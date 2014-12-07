@@ -77,10 +77,12 @@ namespace MyMusicTagger
             expected.Add(Tags.Performers, parts[parts.Length - 2]);
             expected.Add(Tags.AlbumArtists, parts[parts.Length - 2]);
             expected.Add(Tags.Genre, parts[parts.Length - 3]);
+            expected.Add(Tags.Title, System.IO.Path.GetFileNameWithoutExtension(filePath));
             current.Add(Tags.Album, file.Tag.Album);
             current.Add(Tags.Performers, String.Join(";", file.Tag.Performers));
             current.Add(Tags.AlbumArtists, String.Join(";", file.Tag.AlbumArtists));
             current.Add(Tags.Genre, String.Join(";", file.Tag.Genres));
+            current.Add(Tags.Title, file.Tag.Title);
             foreach (var tag in expected.Keys)
             {
                 if (expected[tag] != current[tag])
